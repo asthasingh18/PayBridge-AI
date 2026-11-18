@@ -1,165 +1,287 @@
-﻿# PayBridge AI 2.0
+# 🌉 PayBridge AI
+### One Payment Ecosystem. Multiple Possibilities. One Intelligent Bridge.
 
-**AI-Powered Cross-Border Payment Compatibility & Intelligence Platform**
-
-PayBridge AI 2.0 is an intelligent payment routing and merchant compatibility platform built for the **Elevate-PayPal Hackathon**. It evaluates international payment-route compatibility against local UPI QR standards, explains evaluation verdicts using Google Gemini AI, demonstrates seamless checkout flows via PayPal Sandbox, and provides an interactive RouteIQ intelligence dashboard.
-
----
-
-## Architecture & Monorepo Structure
-
-`	ext
-Elevate-PayPal/
-├── docs/                               # Architecture and API contracts
-│   ├── API_CONTRACT.md                 # REST API endpoints & payloads
-│   ├── ARCHITECTURE.md                 # System architecture & component flow
-│   └── TEST_PLAN.md                    # Test execution & verification plan
-├── frontend/                           # React 19 + Vite 8 SPA Client
-│   ├── public/                         # Static UI assets & branding
-│   ├── src/
-│   │   ├── components/                 # PayBridgeLogo, RouteIQNetwork, visualizers
-│   │   ├── pages/                      # Dashboard, RouteIntelligence (RouteIQ)
-│   │   └── services/                   # Centralized API service with proxy support
-│   ├── .env.example                    # Frontend environment template
-│   ├── package.json                    # Dependencies & build scripts
-│   └── vite.config.js                  # Vite configuration & /api proxy to port 8081
-├── backend/                            # Java 21 + Spring Boot 3.4.3 REST Service
-│   ├── src/main/java/com/paybridge/
-│   │   ├── config/                     # CORS and web configuration
-│   │   ├── controller/                 # REST Controllers (QR, Compatibility, AI, Payment, Health)
-│   │   ├── dto/                        # Strongly typed request/response records
-│   │   ├── entity/                     # JPA entities for MySQL persistence
-│   │   ├── repository/                 # Spring Data JPA repositories
-│   │   └── service/                    # Deterministic engines, QR parser, Gemini & PayPal services
-│   ├── src/test/                       # 150 automated unit, integration, and security tests
-│   ├── application-local.properties.example # Local MySQL credential template
-│   ├── pom.xml                         # Maven dependencies & build plugins
-│   └── mvnw / mvnw.cmd                 # Maven wrapper
-├── .gitignore                          # Monorepo git exclusion rules
-├── LICENSE                             # MIT License
-└── README.md                           # This file
-`
+<p align="center">
+  <strong>Making payment compatibility understandable through AI, intelligent evaluation, and fintech engineering.</strong>
+</p>
 
 ---
 
-## Technology Stack
+## 💡 The idea
 
-| Tier | Technologies |
+**What happens when a payment QR code meets a payment ecosystem it wasn't designed for?**
+
+A QR code might contain valid payment information, but that doesn't automatically mean every payment application or network can process it.
+
+Payment interoperability is more than scanning a QR code. It involves understanding payment data, evaluating compatibility, and identifying limitations.
+
+That's where **PayBridge AI** comes in.
+
+PayBridge AI is an AI-assisted payment compatibility platform that brings together QR data analysis, deterministic evaluation, explainable AI, and PayPal Sandbox workflows in one application.
+
+Instead of simply asking *"Can I scan this?"*, PayBridge AI explores a more useful question:
+
+**"What does this payment data tell us, and how compatible is it with the intended payment flow?"**
+
+---
+
+## ⚡ From QR data to an understandable decision
+
+<text> </text>
+
+<box border radius="xl" padding={3} gap={3}>
+  <row align="center" justify="between">
+    **01 · DECODE**
+    <badge color="info">QR Intelligence</badge>
+  </row>
+  Understand and extract structured information from payment QR input.
+  <divider color="subtle" />
+  <row align="center" justify="between">
+    **02 · EVALUATE**
+    <badge color="success">Rule-based engine</badge>
+  </row>
+  Evaluate payment compatibility using deterministic application logic.
+  <divider color="subtle" />
+  <row align="center" justify="between">
+    **03 · EXPLAIN**
+    <badge color="discovery">Gemini AI</badge>
+  </row>
+  Turn technical evaluation results into human-readable explanations.
+  <divider color="subtle" />
+  <row align="center" justify="between">
+    **04 · EXPLORE**
+    <badge>Payment workflows</badge>
+  </row>
+  Test payment order creation and capture through PayPal Sandbox.
+</box>
+
+## 🧠 The compatibility engine
+
+Not every evaluation should be reduced to a simple yes or no.
+
+PayBridge AI uses three evaluation outcomes:
+
+<box border radius="lg" padding={3} gap={3}>
+  <row align="center" gap={2}>
+    <badge color="success">COMPATIBLE</badge>
+    **Compatibility conditions satisfied**
+  </row>
+  The evaluated data meets the application's defined compatibility rules.
+  <divider color="subtle" />
+  <row align="center" gap={2}>
+    <badge color="warning">CONDITIONAL</badge>
+    **Additional conditions apply**
+  </row>
+  The evaluation identifies limitations or conditions that need consideration.
+  <divider color="subtle" />
+  <row align="center" gap={2}>
+    <badge color="secondary">UNVERIFIED</badge>
+    **Compatibility not established**
+  </row>
+  Available information is insufficient to establish compatibility.
+</box>
+
+**Why this matters:** The compatibility verdict comes from deterministic application logic. Gemini AI helps explain the result; it does not replace the evaluation engine or independently authorize a payment.
+
+## ✨ What makes PayBridge AI different?
+
+| Capability | What it brings |
 |---|---|
-| **Frontend** | React 19, Vite 8, Tailwind CSS, Lucide React, Motion, AG Grid Community |
-| **Backend** | Java 21, Spring Boot 3.4.3, Spring Data JPA, Spring Web |
-| **Database** | MySQL 8.x (with Hibernate schema auto-update) |
-| **AI Integration** | Google Gemini API (gemini-3.5-flash-lite) with strict deterministic fallbacks |
-| **Payment Demo** | PayPal Sandbox Orders API (Create & Capture flow) |
-| **Testing** | JUnit 5, Mockito, MockRestServiceServer, MockMvc (150 tests) |
+| QR data intelligence | Converts payment QR input into structured information |
+| Compatibility evaluation | Provides explicit, rule-based evaluation outcomes |
+| AI explanations | Makes technical results easier to understand |
+| PayPal Sandbox | Demonstrates order creation and capture workflows |
+| RouteIQ dashboard | Presents and organizes evaluation information |
+
+### A deliberate separation of responsibilities
+
+One important engineering decision is that payment compatibility and AI explanations are separate responsibilities.
+
+```text
+                 PAYMENT QR
+                      |
+                      v
+                QR PARSING
+                      |
+                      v
+             COMPATIBILITY ENGINE
+                      |
+             DETERMINISTIC RESULT
+                      |
+                      v
+                GEMINI AI
+                      |
+                      v
+             HUMAN-READABLE INSIGHT
+```
+
+This avoids treating an AI-generated explanation as a payment authorization or compatibility decision.
 
 ---
 
-## Quick Start Guide
+## 🏗️ Under the hood
 
-### Prerequisites
-- **Java 21 JDK** installed and configured (java -version)
-- **Node.js 18+** and **npm** installed (
-ode -v, 
-pm -v)
-- **MySQL 8.x** running locally on port 3306 (or configured via environment variables)
+```mermaid
+flowchart TD
+    U[User] --> FE[React Frontend]
+    FE --> API[Spring Boot REST API]
 
----
+    API --> QR[QR Parsing Service]
+    API --> CE[Compatibility Engine]
+    API --> AI[Gemini Integration]
+    API --> PP[PayPal Sandbox]
+    API --> DB[(MySQL)]
 
-### 1. Setting Up and Running the Backend
+    QR --> CE
+    CE --> DB
+    CE --> AI
+    API --> FE
+```
 
-From the repository root, navigate into the ackend/ directory:
+## 🛠️ Technology choices
 
-`powershell
+| Layer | Stack |
+|---|---|
+| User interface | React 19, Vite 8 |
+| Styling | Tailwind CSS 4 |
+| Interactive components | AG Grid Community, Lucide React, Motion |
+| Backend services | Java 21, Spring Boot 3.4.3 |
+| Persistence | MySQL, Spring Data JPA, Hibernate |
+| AI layer | Google Gemini API |
+| Payment testing | PayPal Sandbox |
+| Build and packaging | Maven, npm, Docker |
+
+## 🔌 API at a glance
+
+| Method | Endpoint | Purpose |
+|---|---|---|
+| `GET` | `/api/health` | Check backend health |
+| `POST` | `/api/qr/parse` | Parse payment QR input |
+| `POST` | `/api/compatibility/evaluate` | Evaluate compatibility |
+| `POST` | `/api/ai/explain` | Generate AI explanation |
+| `GET` | `/api/evaluations` | Retrieve evaluations |
+| `POST` | `/api/payments/orders` | Create Sandbox order |
+| `POST` | `/api/payments/orders/{orderId}/capture` | Capture Sandbox order |
+
+## 📂 Repository map
+
+```text
+PayBridge-AI/
+│
+├── backend/
+│   ├── src/
+│   │   └── main/
+│   │       ├── java/
+│   │       └── resources/
+│   ├── Dockerfile
+│   └── pom.xml
+│
+├── frontend/
+│   ├── src/
+│   ├── public/
+│   └── package.json
+│
+├── docs/
+│   ├── API_CONTRACT.md
+│   ├── ARCHITECTURE.md
+│   └── TEST_PLAN.md
+│
+├── README.md
+└── LICENSE
+```
+
+## 🚀 Run it locally
+
+### Requirements
+
+- Java 21
+- Maven
+- Node.js and npm
+- MySQL
+- Gemini API key
+- PayPal Sandbox credentials
+
+### 1. Clone
+
+```bash
+git clone https://github.com/asthasingh18/PayBridge-AI.git
+cd PayBridge-AI
+```
+
+### 2. Configure the backend
+
+```bash
 cd backend
-`
+```
 
-#### Local Configuration (Optional)
-If your local MySQL root password is not blank, copy the example configuration:
-`powershell
-Copy-Item application-local.properties.example application-local.properties
-`
-Edit pplication-local.properties with your credentials:
-`properties
+Copy `application-local.properties.example` to `application-local.properties` and configure your local credentials:
+
+```properties
+spring.datasource.username=root
 spring.datasource.password=YOUR_MYSQL_PASSWORD
-`
 
-Alternatively, configure standard environment variables:
-- DB_USERNAME: Database username (default: oot)
-- DB_PASSWORD: Database password (default: empty)
-- PAYPAL_CLIENT_ID: PayPal Sandbox client ID
-- PAYPAL_CLIENT_SECRET: PayPal Sandbox client secret
-- GEMINI_API_KEY: Google Gemini API key
+GEMINI_API_KEY=YOUR_GEMINI_API_KEY
 
-#### Run Automated Tests
-`powershell
-.\mvnw.cmd test
-`
-*Current result: 150 tests, 0 failures, 0 errors.*
+PAYPAL_CLIENT_ID=YOUR_PAYPAL_CLIENT_ID
+PAYPAL_CLIENT_SECRET=YOUR_PAYPAL_CLIENT_SECRET
+```
 
-#### Launch Backend Server
-`powershell
-.\mvnw.cmd spring-boot:run
-`
-The backend starts on port **8081**. Verify with:
-`powershell
-Invoke-RestMethod -Uri "http://localhost:8081/api/health"
-# Returns: {"status":"UP"}
-`
+Never commit private credentials.
 
----
+### 3. Start Spring Boot
 
-### 2. Setting Up and Running the Frontend
+```bash
+mvn spring-boot:run
+```
 
-From a new terminal, navigate into the rontend/ directory:
+Default backend port: `8081`.
 
-`powershell
+### 4. Start React
+
+Open another terminal:
+
+```bash
 cd frontend
-`
-
-#### Install Dependencies
-`powershell
 npm install
-`
-
-#### Configure Environment (Optional)
-Copy the environment template:
-`powershell
-Copy-Item .env.example .env
-`
-*(By default, VITE_API_URL is empty to automatically utilize the Vite development proxy routing /api -> http://localhost:8081)*.
-
-#### Start Development Server
-`powershell
 npm run dev
-`
-Open **http://localhost:5173** in your browser.
+```
 
-#### Build for Production
-`powershell
+### 5. Create a production frontend build
+
+```bash
 npm run build
-`
+```
 
 ---
 
-## Core Capabilities
+## 🔐 Engineering considerations
 
-1. **UPI QR Parsing (POST /api/qr/parse):** Parses merchant VPAs (pa), merchant names (pn), transaction amounts (m), and currencies (cu) with strict validation.
-2. **Deterministic Route Compatibility Engine (POST /api/compatibility/evaluate):** Evaluates bilateral rails and documented payment provider evidence, classifying outcomes strictly into COMPATIBLE, CONDITIONAL, or UNVERIFIED.
-3. **AI Explanations with Strict Guardrails (POST /api/ai/explain):** Uses Gemini AI to provide nuanced, plain-language guidance. If the AI model is unreachable, times out, or hallucinates, the backend automatically falls back to deterministic rule explanations without changing the compatibility verdict.
-4. **PayPal Sandbox Integration (POST /api/payments/orders):** Demonstrates real PayPal Sandbox order creation and payment capture.
-5. **RouteIQ Audit & Intelligence Grid (GET /api/evaluations):** Tracks historical evaluations and route verdicts persisted in MySQL.
+- Deterministic compatibility evaluation is kept separate from AI-generated explanations.
+- PayPal Sandbox operations are separate from QR compatibility evaluation.
+- External credentials are configured outside committed source code.
+- The backend requires access to a reachable MySQL instance.
+- Docker packaging is provided for backend deployment.
+
+## 🔭 Where PayBridge AI can go next
+
+- Expand QR-format recognition and validation.
+- Add compatibility rules for more payment ecosystems.
+- Improve explanation traceability.
+- Expand automated integration and security testing.
+- Introduce production monitoring and deployment.
+- Explore additional payment-provider integrations.
+
+## 📌 Project scope
+
+PayBridge AI is a fintech hackathon project demonstrating payment QR analysis, rule-based compatibility evaluation, AI-assisted explanations, and PayPal Sandbox workflows.
+
+It does not claim universal payment interoperability, direct cross-border UPI settlement, or production-grade real-money payment processing.
 
 ---
 
-## Security & Compliance Principles
+## 👩‍💻 Built with curiosity
 
-- **Zero Tracked Secrets:** .env and pplication-local.properties are strictly excluded from version control.
-- **Isolated Payment Sandbox:** PayPal Sandbox transactions demonstrate external payment rail capabilities; they do not settle funds to merchant bank accounts encoded in scanned domestic UPI QR codes.
-- **Immutable Verdicts:** AI explanations clarify limitations and options, but cannot override authoritative backend compatibility decisions.
+**PayBridge AI**
 
----
+*Because understanding a payment should come before attempting one.*
 
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
